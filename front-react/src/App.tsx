@@ -1,6 +1,4 @@
 import { useEffect, useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
 import "./App.css";
 
 import io from "socket.io-client";
@@ -10,22 +8,19 @@ type NotificationType = {
 };
 
 function App() {
-  const [count, setCount] = useState(0);
+  const [receivedNotification, setReceivedNotication] = useState("");
 
   useEffect(() => {
-    const socket = io("http://localhost:3000"); // Substitua pelo endereço do seu servidor
-
-    // Evento de conexão
+    const socket = io("http://localhost:3000");
     socket.on("connect", () => {
       console.log("Conectado ao servidor WebSocket");
     });
 
-    // Evento de notificação
     socket.on("notification", (data: NotificationType) => {
+      setReceivedNotication(data.notification);
       console.log("Recebido evento de notificação:", data);
     });
 
-    // Limpando a conexão ao desmontar o componente
     return () => {
       socket.disconnect();
     };
@@ -33,25 +28,12 @@ function App() {
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
+      <p>
+        View notification in{" "}
+        <a href="http://localhost:5174" target="_blank">
+          Vue.js app
         </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
+        {receivedNotification && <p>Notication: {receivedNotification}</p>}
       </p>
     </>
   );

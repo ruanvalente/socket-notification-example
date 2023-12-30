@@ -1,6 +1,13 @@
 <template>
   <div>
-    <p v-if="receivedNotification">Notiicação recebida: {{ receivedNotification }}</p>
+    <p>
+      View notification in
+      <a href="http://localhost:5173" target="_blank">
+        React app
+      </a>
+    </p>
+
+    <p v-if="receivedNotification">Notication: {{ receivedNotification }}</p>
   </div>
 </template>
 
